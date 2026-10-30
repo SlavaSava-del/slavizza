@@ -1,0 +1,1 @@
+export { sizesProduct } from "./pizza";

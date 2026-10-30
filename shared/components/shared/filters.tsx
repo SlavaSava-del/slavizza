@@ -1,12 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Title } from "./title";
 import { Input, Slider } from "../ui";
 import { CheckboxFiltersGroup } from "./checkbox-filters-group";
-import { useFilters, useGetIngredients } from "@/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useFilters, useGetIngredients } from "@/shared/hooks";
+import { cn } from "cn";
 
 interface FiltersProps {
   className?: string;

@@ -1,5 +1,5 @@
-import { db } from "@/lib/db";
-import { products } from "@/lib/db/schema";
+import { db } from "@/shared/lib/db";
+import { products } from "@/shared/lib/db/schema";
 import { ilike } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 

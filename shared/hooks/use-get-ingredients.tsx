@@ -1,8 +1,8 @@
 "use client";
 
-import { Api } from "@/services/api-client";
-import { MainIngredients } from "@/services/main-ingredients";
 import { useEffect, useState } from "react";
+import { MainIngredients } from "../services/main-ingredients";
+import { Api } from "../services/api-client";
 
 export const useGetIngredients = () => {
   const [isLoading, setIsLoading] = useState(true);

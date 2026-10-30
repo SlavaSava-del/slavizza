@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
 import { Container } from "./container";
 import { SortPopup } from "./sort-popup";
-import { Categories } from "@/lib/db/types";
 import { CategoriesList } from "./categories-list";
+import { Categories } from "@/shared/lib/db/types";
+import { cn } from "cn";
 
 interface TopBarProps {
   categories: Categories[];

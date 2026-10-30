@@ -4,9 +4,9 @@ import {
   ProductsGroupList,
   Title,
   TopBar,
-} from "@/components/shared";
-import { db } from "@/lib/db";
-import { categories, products, productVariants } from "@/lib/db/schema";
+} from "@/shared/components/shared";
+import { db } from "@/shared/lib/db";
+import { categories, products, productVariants } from "@/shared/lib/db/schema";
 import { count, eq, getColumns, min } from "drizzle-orm";
 
 export default async function Home() {

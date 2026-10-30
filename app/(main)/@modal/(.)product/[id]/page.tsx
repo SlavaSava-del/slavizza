@@ -1,7 +1,7 @@
-import { ChooseProductModal } from "@/components/shared";
-import { db } from "@/lib/db";
-import { ingredients, products, productVariants } from "@/lib/db/schema";
-import { Ingredients } from "@/lib/db/types";
+import { ChooseProductModal } from "@/shared/components/shared";
+import { db } from "@/shared/lib/db";
+import { ingredients, products, productVariants } from "@/shared/lib/db/schema";
+import { Ingredients } from "@/shared/lib/db/types";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 

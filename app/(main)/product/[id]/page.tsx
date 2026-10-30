@@ -3,9 +3,9 @@ import {
   GroupVariants,
   PizzaImage,
   Title,
-} from "@/components/shared";
-import { db } from "@/lib/db";
-import { products, productVariants } from "@/lib/db/schema";
+} from "@/shared/components/shared";
+import { db } from "@/shared/lib/db";
+import { products, productVariants } from "@/shared/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 
@@ -41,12 +41,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </p>
 
         <GroupVariants
-          selectedValue="30"
+          selectedValue={30}
           items={[
-            { name: "20 см", value: "20", disabled: true },
-            { name: "25 см", value: "25" },
-            { name: "30 см", value: "30" },
-            { name: "35 см", value: "35" },
+            { name: "20 см", value: 20, disabled: true },
+            { name: "25 см", value: 25 },
+            { name: "30 см", value: 30 },
+            { name: "35 см", value: 35 },
           ]}
         />
       </div>

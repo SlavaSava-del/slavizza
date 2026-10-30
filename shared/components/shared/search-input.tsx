@@ -1,8 +1,8 @@
 "use client";
 
-import { Products } from "@/lib/db/types";
-import { cn } from "@/lib/utils";
-import { Api } from "@/services/api-client";
+import { Products } from "@/shared/lib/db/types";
+import { Api } from "@/shared/services/api-client";
+import { cn } from "cn";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

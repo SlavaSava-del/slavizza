@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
+import { cn } from "cn";
+import { Button } from "../../ui";
 import { PizzaImage } from "../product-image";
 import { Title } from "../title";
-import { Button } from "@/components/ui";
 
 interface ChoosePizzaVariantProps {
   imageUrl: string;

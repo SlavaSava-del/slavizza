@@ -1,8 +1,8 @@
 "use client";
 
-import { Categories } from "@/lib/db/types";
-import { cn } from "@/lib/utils";
-import { useGetActiveId } from "@/store/category";
+import { Categories } from "@/shared/lib/db/types";
+import { useGetActiveId } from "@/shared/store/category";
+import { cn } from "cn";
 
 interface CategoriesListProps {
   categories: Categories[];

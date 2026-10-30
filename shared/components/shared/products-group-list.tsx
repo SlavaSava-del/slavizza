@@ -1,12 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useIntersection } from "react-use";
 import { Title } from "./title";
 import { ProductCard } from "./product-card";
 import { useEffect, useRef } from "react";
-import { setActiveCategoryId } from "@/store/category";
-import { Products } from "@/lib/db/types";
+import { setActiveCategoryId } from "@/shared/store/category";
+import { cn } from "cn";
+import { Products } from "@/shared/lib/db/types";
 
 export type ProductsForCard = Products & {
   price: number | null;

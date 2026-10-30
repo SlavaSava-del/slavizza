@@ -1,10 +1,10 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { FilterChecboxProps, FilterCheckbox } from "./filter-checkbox";
 import { Input } from "../ui";
 import { useState } from "react";
 import { CheckboxFiltersSkeleton } from "../skeletons";
+import { cn } from "cn";
 
 type Item = FilterChecboxProps;
 
