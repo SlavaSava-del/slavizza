@@ -5,7 +5,7 @@ import { Input, Slider } from "../ui";
 import { CheckboxFiltersGroup } from "./checkbox-filters-group";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useFilters, useGetIngredients } from "@/shared/hooks";
+import { useFilters, useGetMainIngredients } from "@/shared/hooks";
 import { cn } from "cn";
 
 interface FiltersProps {
@@ -16,7 +16,7 @@ export function Filters({ className }: FiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { ingredients, isLoading } = useGetIngredients();
+  const { ingredients, isLoading } = useGetMainIngredients();
   const {
     sliderValue,
     setSliderValue,
@@ -52,7 +52,6 @@ export function Filters({ className }: FiltersProps) {
     <div className={cn("", className)}>
       <Title text="Фильтрация" size="sm" className="mb-5 font-bold" />
 
-      {/* Верхние чекбоксы */}
       <CheckboxFiltersGroup
         title="Особенности"
         className="mt-5"
@@ -65,7 +64,6 @@ export function Filters({ className }: FiltersProps) {
         name="features"
       />
 
-      {/* Фильтры цен */}
       <div className="mt-5 border-y border-y-neutral-100 py-6 pb-7">
         <p className="font-bold mb-3">Цена от и до:</p>
 
@@ -116,7 +114,6 @@ export function Filters({ className }: FiltersProps) {
         />
       </div>
 
-      {/* Нижние чекбоксы */}
       <CheckboxFiltersGroup
         title="Ингридиенты"
         className="mt-5"

@@ -1,4 +1,4 @@
-import * as products from "./products";
+import * as productsSearch from "./search-products";
 import * as mainIngredients from "./main-ingredients";
 
-export const Api = { products, mainIngredients };
+export const Api = { productsSearch, mainIngredients };

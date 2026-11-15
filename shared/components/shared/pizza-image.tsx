@@ -2,11 +2,17 @@ import { cn } from "cn";
 
 interface PizzaImageProps {
   imageUrl: string;
-  size: 20 | 25 | 30 | 35;
+  size: number;
   className?: string;
+  alt: string;
 }
 
-export function PizzaImage({ className, imageUrl, size }: PizzaImageProps) {
+export function PizzaImage({
+  className,
+  imageUrl,
+  size,
+  alt,
+}: PizzaImageProps) {
   return (
     <div
       className={cn(
@@ -16,7 +22,7 @@ export function PizzaImage({ className, imageUrl, size }: PizzaImageProps) {
     >
       <img
         src={imageUrl}
-        alt="pizza"
+        alt={alt}
         className={cn(
           "relative left-2 top-2 transition-all duration-300 z-10",
           {
@@ -28,8 +34,8 @@ export function PizzaImage({ className, imageUrl, size }: PizzaImageProps) {
         )}
       />
 
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-dashed border-2 rounded-full border-gray-200 w-87.5 h-87.5" />
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-dashed border-2 rounded-full border-gray-200 w-100 h-100" />
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-dashed border-2 rounded-full border-gray-200 w-80 h-80" />
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-dashed border-2 rounded-full border-gray-200 w-90 h-90" />
     </div>
   );
 }

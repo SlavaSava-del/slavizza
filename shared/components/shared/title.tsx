@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-type TitleSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+type TitleSize = "xs" | "base" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 interface TitleProps {
   size?: TitleSize;
@@ -12,6 +12,7 @@ interface TitleProps {
 export const Title = ({ text, size = "sm", className }: TitleProps) => {
   const mapTagBySize = {
     xs: "h5",
+    base: "h5",
     sm: "h4",
     md: "h3",
     lg: "h2",
@@ -21,6 +22,7 @@ export const Title = ({ text, size = "sm", className }: TitleProps) => {
 
   const mapClassNameBySize = {
     xs: "text-[16px]",
+    base: "text-[20px]",
     sm: "text-[22px]",
     md: "text-[26px]",
     lg: "text-[32px]",

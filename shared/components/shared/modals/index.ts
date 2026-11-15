@@ -1,2 +1,4 @@
 export { ChooseProductModal } from "./choose-product-modal";
-export { ChoosePizzaVariant } from "./choose-pizza-variant";
+export { AdditionalIngredient } from "./additional-ingredient";
+export { ProductModalContent } from "./product-modal-content";
+export { ProductModalShell } from "./product-modal-shell";

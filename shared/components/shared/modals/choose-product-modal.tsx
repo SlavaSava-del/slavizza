@@ -1,19 +1,20 @@
 "use client";
 
 import { Title } from "../title";
-import { useClickAway } from "react-use";
-import { useRef } from "react";
-import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { PizzaImage } from "../product-image";
+import { PizzaImage } from "../pizza-image";
 import { GroupVariants, Variant } from "../group-variants";
-import Image from "next/image";
 import { Ingredients, Products, ProductVariants } from "@/shared/lib/db/types";
 import { cn } from "cn";
 import { Button } from "../../ui";
-import { sizesProduct } from "@/shared/helpers";
-import { useGetDefaultVariantProduct } from "@/shared/hooks";
+import {
+  getPizzaTypeDescriptionAndProductCharacters,
+  getSelectedProduct,
+  getSizesProduct,
+} from "@/shared/helpers";
+import { AdditionalIngredient } from "./additional-ingredient";
+import { useModal } from "@/shared/hooks/use-modal";
 
 export interface Product {
   products: Products;
@@ -23,6 +24,7 @@ export interface Product {
 interface ChooseProductModalProps {
   product: Product[];
   ingredients: Ingredients[];
+  defaultVariant: Product;
   className?: string;
 }
 
@@ -31,88 +33,111 @@ gsap.registerPlugin(useGSAP);
 export function ChooseProductModal({
   product,
   ingredients,
+  defaultVariant,
   className,
 }: ChooseProductModalProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const container = useRef<HTMLDivElement>(null);
-  const router = useRouter();
-	const  = useGetDefaultVariantProduct()
+  const { size, setSize, type, setType, selectedIngredients, onAddIngredient } =
+    useModal(defaultVariant);
 
-  useClickAway(ref, () => router.back());
-	
-  useGSAP(
-		() => {
-			gsap.fromTo(
-				'[data-animate="background"]',
-        {
-					opacity: 0,
-        },
-        { opacity: 1, duration: 0.5, ease: "power1.inOut" },
-      );
-			
-      gsap.from('[data-animate="modal"]', {
-				y: () => window.innerHeight,
-        duration: 0.5,
-        ease: "none",
-      });
-    },
-    { scope: container },
+  function handleChangeSize(value: number) {
+    const availableTypes = product
+      .filter((item) => item.product_variants.size === value)
+      .map((item) => item.product_variants.pizzaType);
+
+    setSize(value);
+
+    if (type && !availableTypes.includes(type)) {
+      setType(availableTypes[0] ?? null);
+    }
+  }
+
+  const sizes = getSizesProduct(product);
+  const selectedProduct = getSelectedProduct(product, size, type);
+  const availablePizzaTypes = product
+    .filter((item) => item.product_variants.size === size)
+    .map((item) => item.product_variants.pizzaType);
+
+  const pizzaTypes: Variant[] = [
+    { name: "Традиционное", value: 1 },
+    { name: "Тонкое", value: 2 },
+  ].map((item) => ({
+    ...item,
+    disabled: !availablePizzaTypes.includes(String(item.value)),
+  }));
+
+  const selectedProductVariants = selectedProduct.product_variants;
+  const defaultVariantProduct = defaultVariant.products;
+
+  const productCharacters = getPizzaTypeDescriptionAndProductCharacters(
+    selectedProductVariants,
   );
-	
-	const sizes = sizesProduct(product);
-	
+
+  const totalPrice =
+    selectedProductVariants.price +
+    ingredients.reduce(
+      (acc, item) =>
+        selectedIngredients.has(item.id) ? acc + item.price : acc,
+      0,
+    );
+
   return (
-		<div ref={container}>
-      <div
-        data-animate="background"
-        className="fixed inset-0 bg-black/50 z-30"
-      />
+    <div
+      className={cn(
+        "grid grid-cols-[55%_45%] h-full overflow-hidden grid-rows-1 items-center z-30",
+        className,
+      )}
+    >
+      {type !== null ? (
+        <PizzaImage
+          imageUrl={selectedProductVariants.imageUrl}
+          size={size}
+          alt={selectedProduct.products.name}
+        />
+      ) : (
+        <img
+          className="p-7"
+          src={selectedProductVariants.imageUrl}
+          alt={selectedProduct.products.name}
+        />
+      )}
 
-      <div
-        data-animate="modal"
-        ref={ref}
-        className={cn(
-          "grid grid-cols-[55%_45%] items-center fixed rounded-3xl w-235 h-150 bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30",
-          className,
-        )}
-      >
-        <PizzaImage imageUrl={defaultVariant.products.imageUrl} size={30} />
-
-        <div className="bg-[#FCFCFC] p-7 h-full overflow-auto">
+      <div className="flex flex-col bg-[#FCFCFC] h-full rounded-r-3xl">
+        <div className="modal-scrollbar overscroll-contain mr-3 mt-2 min-h-0 overflow-y-auto overflow-x-hidden flex-1 p-7">
           <Title
-            text={defaultVariant.products.name}
+            text={defaultVariantProduct.name}
             size="md"
             className="font-extrabold"
           />
 
-          <p className="text-gray-400 mb-1">
-            30 см, традиционное тесто 30, 590 г
-          </p>
+          <p className="text-gray-400 mb-1">{productCharacters}</p>
 
           <p className="font-medium text-sm text-gray-700 mb-4 leading-tight">
-            {defaultVariant.products.ingredientsForProduct?.join(", ")}
+            {defaultVariantProduct.ingredientsForProduct !== null
+              ? defaultVariantProduct.ingredientsForProduct?.join(", ")
+              : defaultVariantProduct.description !== null
+                ? defaultVariantProduct.description
+                : "Для этого продукта неизвестно описание."}
           </p>
 
           <div className="flex flex-col gap-2 mb-4">
             <GroupVariants
+              onClick={(value) => handleChangeSize(value)}
               items={sizes}
-              selectedValue={defaultVariant.product_variants.size}
+              selectedValue={size}
             />
 
-            {typeof defaultVariant.product_variants.pizzaType === "string" && (
+            {type !== null && (
               <GroupVariants
-                items={[
-                  { name: "Традиционное", value: 1 },
-                  { name: "Тонкое", value: 2 },
-                ]}
-                selectedValue={+defaultVariant.product_variants.pizzaType}
+                items={pizzaTypes}
+                selectedValue={+type}
+                onClick={(value) => setType(String(value))}
               />
             )}
           </div>
 
-          {defaultVariant.products.allowAdditionalIngredients &&
+          {defaultVariantProduct.allowAdditionalIngredients &&
             ingredients.length > 0 && (
-              <div>
+              <>
                 <Title
                   size="sm"
                   className="font-bold mb-1"
@@ -121,43 +146,25 @@ export function ChooseProductModal({
 
                 <div className="grid grid-cols-3 gap-5 mb-6">
                   {ingredients.map((item) => (
-                    <button
+                    <AdditionalIngredient
                       key={item.id}
-                      className="flex flex-col justify-center items-center rounded-2xl bg-gray-50 gap-1 hover:shadow-lg transition-all duration-200"
-                    >
-                      <Image
-                        src={item.imageUrl}
-                        alt={item.name}
-                        width={88}
-                        height={88}
-                      />
-
-                      <p className="text-center font-bold text-xs">
-                        {item.name}
-                      </p>
-
-                      <p className="text-center font-extrabold text-sm">
-                        {item.price}₽
-                      </p>
-                    </button>
+                      name={item.name}
+                      price={item.price}
+                      imageUrl={item.imageUrl}
+                      onClick={() => onAddIngredient(item.id)}
+                      active={selectedIngredients.has(item.id)}
+                    />
                   ))}
                 </div>
-              </div>
+              </>
             )}
-
-          <div className="p-6 bg-[#FCFCFC]">
-            <Button className="h-13.75 px-10 text-base rounded-[18px] w-full">
-              Добавить в корзину за {520}₽
-            </Button>
-          </div>
         </div>
 
-        <button onClick={() => router.back()}>
-          <img
-            src="/cross.svg"
-            className="absolute top-0.5 -right-17 bg-white transition-all duration-200 rounded-full hover:bg-[#F9FAFB]"
-          />
-        </button>
+        <div className="p-6 bg-[#FCFCFC] z-30 rounded-br-3xl">
+          <Button className="h-13.75 px-10 font-bold text-lg rounded-[18px] w-full">
+            Добавить в корзину за {totalPrice} ₽
+          </Button>
+        </div>
       </div>
     </div>
   );

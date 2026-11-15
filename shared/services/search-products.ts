@@ -1,4 +1,4 @@
-import type { Products } from "@/lib/db/types";
+import { Products } from "../lib/db/types";
 import { Routes } from "./routes";
 
 export const search = async (query: string): Promise<Products[]> => {
@@ -7,7 +7,7 @@ export const search = async (query: string): Promise<Products[]> => {
   const params = new URLSearchParams({ query: normalizedQuery });
 
   const response = await fetch(`${Routes.SEARCH_PRODUCTS}?${String(params)}`, {
-    cache: "no-cache",
+    cache: "no-store",
   });
 
   if (!response.ok) {

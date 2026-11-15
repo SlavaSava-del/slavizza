@@ -6,7 +6,7 @@ import { cn } from "cn";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useClickAway, useDebounce } from "react-use";
 
 interface SearchInputProps {
@@ -25,7 +25,7 @@ export function SearchInput({ className }: SearchInputProps) {
 
   useDebounce(
     () => {
-      Api.products
+      Api.productsSearch
         .search(searchQuery)
         .then((items) => setProducts(items))
         .catch((e) => console.error(e));
@@ -33,6 +33,21 @@ export function SearchInput({ className }: SearchInputProps) {
     250,
     [searchQuery],
   );
+
+  useEffect(() => {
+    if (!focused) return;
+
+    const mainOverflow = document.body.style.overflow;
+    const html = document.documentElement;
+
+    document.body.style.overflow = "hidden";
+    html.classList.add("modal-open");
+
+    return () => {
+      document.body.style.overflow = mainOverflow;
+      html.classList.remove("modal-open");
+    };
+  }, [focused]);
 
   const onClickItem = () => {
     setFocused(false);
@@ -77,6 +92,7 @@ export function SearchInput({ className }: SearchInputProps) {
               <Link
                 key={product.id}
                 href={`/product/${product.id}`}
+                scroll={false}
                 onClick={onClickItem}
                 className="flex items-center gap-3 hover:bg-primary/10 px-3 py-2 transition-all duration-300"
               >

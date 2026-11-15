@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { MainIngredients } from "../services/main-ingredients";
 import { Api } from "../services/api-client";
 
-export const useGetIngredients = () => {
+export const useGetMainIngredients = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [ingredients, setIngredients] = useState<MainIngredients[]>([]);
 

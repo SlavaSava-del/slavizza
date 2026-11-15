@@ -1,7 +1,7 @@
 import { Variant } from "../components/shared/group-variants";
 import { Product } from "../components/shared/modals/choose-product-modal";
 
-export function sizesProduct(product: Product[]): Variant[] {
+export function getSizesProduct(product: Product[]): Variant[] {
   return [
     ...new Map(
       product.map((item) => [

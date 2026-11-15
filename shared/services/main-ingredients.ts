@@ -6,7 +6,13 @@ export interface MainIngredients {
 }
 
 export const getAll = async (): Promise<MainIngredients[]> => {
-  const response = await fetch(Routes.MAIN_INGREDIENTS, { cache: "no-cache" });
+  const response = await fetch(Routes.MAIN_INGREDIENTS, {
+    cache: "force-cache",
+    next: {
+      revalidate: 7200,
+      tags: ["main-ingredients"],
+    },
+  });
 
   if (!response.ok) {
     throw new Error(
